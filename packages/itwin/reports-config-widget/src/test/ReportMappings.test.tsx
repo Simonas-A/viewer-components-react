@@ -48,6 +48,8 @@ import {
   SelectionChangeEvent,
 } from "@itwin/presentation-frontend";
 import type { BeEvent } from "@itwin/core-bentley";
+import BulkExtractor from "../widget/components/BulkExtractor";
+import { useReportsApiConfig } from "../widget/context/ReportsApiConfigContext";
 
 // For the extraction test
 jest.setTimeout(20000);
@@ -133,6 +135,13 @@ const mockReport: Report = {
     },
   },
 };
+
+const mockApiConfig = {
+  getAccessToken: async () => "mockAccessToken",
+  baseUrl: REPORTS_CONFIG_BASE_URL,
+}
+
+const mockBulkExtractor = new BulkExtractor(mockApiConfig, []);
 
 const mockReportMappingsFactory = (): ReportMappingCollection => {
   return {
@@ -308,7 +317,7 @@ describe("Report Mappings View", () => {
       ...iModelHandlers
     );
 
-    render(<ReportMappings report={mockReport} goBack={jest.fn()} />);
+    render(<ReportMappings report={mockReport} bulkExtractor={mockBulkExtractor} goBack={jest.fn()} />);
 
     await waitForElementToBeRemoved(() => screen.getByText(/loading/i));
 
@@ -378,7 +387,7 @@ describe("Report Mappings View", () => {
     );
 
     const { user } = render(
-      <ReportMappings report={mockReport} goBack={jest.fn()} />
+      <ReportMappings report={mockReport} bulkExtractor={mockBulkExtractor} goBack={jest.fn()} />
     );
 
     await waitForElementToBeRemoved(() => screen.getByText(/loading/i));
@@ -471,7 +480,7 @@ describe("Report Mappings View", () => {
     );
 
     const { user } = render(
-      <ReportMappings report={mockReport} goBack={jest.fn()} />
+      <ReportMappings report={mockReport} bulkExtractor={mockBulkExtractor} goBack={jest.fn()} />
     );
 
     await waitForElementToBeRemoved(() => screen.getByText(/loading/i));
@@ -601,7 +610,7 @@ describe("Report Mappings View", () => {
     );
 
     const { user } = render(
-      <ReportMappings report={mockReport} goBack={jest.fn()} />
+      <ReportMappings report={mockReport} bulkExtractor={mockBulkExtractor} goBack={jest.fn()} />
     );
 
     await waitForElementToBeRemoved(() => screen.getByText(/loading/i));
@@ -701,7 +710,7 @@ describe("Report Mappings View", () => {
     );
 
     const { user } = render(
-      <ReportMappings report={mockReport} goBack={jest.fn()} />
+      <ReportMappings report={mockReport} bulkExtractor={mockBulkExtractor} goBack={jest.fn()} />
     );
 
     await waitForElementToBeRemoved(() => screen.getByText(/loading/i));
@@ -819,7 +828,7 @@ describe("Report Mappings View", () => {
       )
     );
 
-    render(<ReportMappings report={mockReport} goBack={jest.fn()} />);
+    render(<ReportMappings report={mockReport} bulkExtractor={mockBulkExtractor} goBack={jest.fn()} />);
 
     // https://github.com/testing-library/user-event/issues/833
     const user = userEvent.setup({ delay: null });
